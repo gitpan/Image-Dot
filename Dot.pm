@@ -1,5 +1,5 @@
 #
-# $Id: Dot.pm,v 1.1 2002/10/16 13:11:13 rgiersig Exp $
+# $Id: Dot.pm,v 1.2 2002/10/17 12:14:35 rgiersig Exp $
 #
 
 package Image::Dot;
@@ -14,7 +14,7 @@ Image::Dot - create 1x1 pixel image files (pure-perl)
 
 =head1 VERSION
 
-1.0
+1.1
 
 =head1 SYNOPSIS
 
@@ -47,7 +47,7 @@ This module can be used under the same license as perl itself.
 use vars qw(@ISA @EXPORT $VERSION);
 @ISA = qw(Exporter);
 @EXPORT = qw(dot_PNG_RGB dot_PNG_RGBA dot_GIF_transparent);
-$VERSION = "1.0";
+$VERSION = "1.1";
 
 # a simple implementation of the adler32 checksum algorithm
 # expects the numeric byte values already presplit/unpacked in @_; not
@@ -157,7 +157,7 @@ sub MyPNGcrc {
 # template and just patch in the uncompressed RGB bytes; I do have to
 # re-calculate the checksums, but that's not too hard...
 
-sub dot_PNG_RGB {
+sub dot_PNG_RGB ($$$) {
   my ($r, $g, $b) = @_;
   my $idat = pack("C11N",
 	       0x78, 0x01, 0x01, 0x04, 0x00, 0xFB, 0xFF, 0, $r, $g, $b,
@@ -176,7 +176,7 @@ sub dot_PNG_RGB {
 }
 
 ######################################################################
-sub dot_PNG_RGBA {
+sub dot_PNG_RGBA ($$$$) {
   my ($r, $g, $b, $a) = @_;
   my $idat = pack("C12N",
 	       0x78, 0x01, 0x01, 0x05, 0x00, 0xFA, 0xFF, 0, $r, $g, $b, $a,
@@ -196,7 +196,7 @@ sub dot_PNG_RGBA {
 
 ######################################################################
 # this is just a constant
-sub dot_GIF_transparent {
+sub dot_GIF_transparent () {
   "\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\xff\x00\xc0\xc0\xc0".
     "\x00\x00\x00\x21\xf9\x04\x01\x00\x00\x00\x00\x2c\x00\x00\x00\x00".
       "\x01\x00\x01\x00\x40\x02\x02\x44\x01\x00\x3b"
